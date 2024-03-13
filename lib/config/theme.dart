@@ -4,10 +4,7 @@ ThemeData lightTheme(){
   return ThemeData.light().copyWith(
     colorScheme: const ColorScheme.light().copyWith(),
     scaffoldBackgroundColor: Colors.transparent,
-    appBarTheme: const AppBarTheme (
-      backgroundColor: Colors.transparent,
-      iconTheme: IconThemeData()
-    ),
+    
     textTheme: const TextTheme(
       titleLarge: TextStyle(
         fontSize: 20

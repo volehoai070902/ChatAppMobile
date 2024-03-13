@@ -22,10 +22,9 @@ class MainPage extends StatelessWidget {
               height: 56,
               child: ListTile(
                 title: Center(
-                    child: Text(
-                  "Chatbox",
-                  style: Theme.of(context).textTheme.titleSmall,
-                )),
+                    child: Image(
+                      image: AssetImage("assets/images/logo.png"),
+                    )),
               ),
             ),
             Container(

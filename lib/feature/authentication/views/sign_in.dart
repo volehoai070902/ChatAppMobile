@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chatapp/feature/chat/views/chat_views.dart';
+import 'package:chatapp/feature/listfriend/views/list_friend.dart';
 import 'package:chatapp/widgets/custom_textfield.dart';
 import 'package:chatapp/widgets/password_textfield.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,6 @@ class SignIn extends StatelessWidget{
     // TODO: implement build
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      
       backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -24,7 +24,7 @@ class SignIn extends StatelessWidget{
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Expanded(child: Image(image: AssetImage("assets/images/logo.png"), height: size.height / 3,width: size.width,)),
+              
               Center(
                 child: Text("Login to Chatbox", style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   color: Colors.black
@@ -40,6 +40,7 @@ class SignIn extends StatelessWidget{
                   color: Colors.black
                 ),),
               ),
+              Expanded(child: Image(image: AssetImage("assets/images/logo.png"), height: size.height / 3,width: size.width,)),
               SizedBox(
                 height: 20,
               ),
@@ -102,7 +103,7 @@ class SignIn extends StatelessWidget{
                         ),
                         onPressed: check ? (){
                           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) {
-                            return ChatPage();
+                            return ListFriendPage();
                           },), (route) => false);
                         }:null,
                         child: Text("Log in"),
@@ -112,9 +113,8 @@ class SignIn extends StatelessWidget{
                 ))
             ],
           ),
-        ) ,
+        ),
       ),
     );
   }
 }
-

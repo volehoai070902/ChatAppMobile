@@ -45,7 +45,6 @@ class ListFriendPage extends StatelessWidget {
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-   
                   children: [
                     Expanded(
                       child: Container(
@@ -55,9 +54,13 @@ class ListFriendPage extends StatelessWidget {
                           color: Color(0xFF584CD7),
                         ),
                         child: GestureDetector(
-                          child: Text("All Chats", style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.bold
-                          ),),
+                          child: Text(
+                            "All Chats",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ),
@@ -69,11 +72,15 @@ class ListFriendPage extends StatelessWidget {
                           color: Colors.grey.shade100,
                         ),
                         child: GestureDetector(
-                          child: Text("Groups",
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black
-                          ),),
+                          child: Text(
+                            "Groups",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                          ),
                         ),
                       ),
                     ),
@@ -86,10 +93,12 @@ class ListFriendPage extends StatelessWidget {
                         ),
                         child: GestureDetector(
                           child: Text("Contracts",
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black
-                          )),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black)),
                         ),
                       ),
                     ),
@@ -107,22 +116,27 @@ class ListFriendPage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return Container(
                           child: ListTile(
-                            onLongPress: () {
-                              
-                            },
-                            onTap: () {
-                              
-                            },
-                            leading: Image(image: AssetImage("assets/images/gamer.png")),
-                            title: Text("Anh Khan", style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.bold
-                            ),),
-                            subtitle: Text("Anh Khan", style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black
-                            ),),
-                          ), 
-
+                            onLongPress: () {},
+                            onTap: () {},
+                            leading: Image(
+                                image: AssetImage("assets/images/gamer.png")),
+                            title: Text(
+                              "Anh Khan",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(
+                              "Anh Khan",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                            ),
+                          ),
                         );
                       },
                     ),
