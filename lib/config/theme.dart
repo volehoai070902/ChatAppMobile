@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ThemeData lightTheme(){
   return ThemeData.light().copyWith(
     colorScheme: const ColorScheme.light().copyWith(),
-    scaffoldBackgroundColor: Colors.transparent,
+    scaffoldBackgroundColor: Colors.white,
     
     textTheme: const TextTheme(
       titleLarge: TextStyle(

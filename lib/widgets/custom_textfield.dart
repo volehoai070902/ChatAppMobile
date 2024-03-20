@@ -4,14 +4,14 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     required this.hintText,
-    required this.emailTextController
+    required this.controller
   }); 
-  final emailTextController;
+  final controller;
   final String hintText;
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: emailTextController,
+      controller: controller,
       style: TextStyle(
         color: Colors.black,
         fontSize: 15

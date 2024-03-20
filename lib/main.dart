@@ -1,12 +1,27 @@
 import 'dart:async';
 
 import 'package:chatapp/config/theme.dart';
+import 'package:chatapp/feature/authentication/models/auth_result.dart';
+import 'package:chatapp/feature/authentication/view_models/notifiers/auth_change_notifier.dart';
 import 'package:chatapp/feature/authentication/views/intro_page.dart';
+import 'package:chatapp/feature/listfriend/views/list_friend.dart';
 import 'package:chatapp/test.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async{
+  await Supabase.initialize(
+    url: 'https://unoazldgvjylccxiznha.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVub2F6bGRndmp5bGNjeGl6bmhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTA4MzI1NzksImV4cCI6MjAyNjQwODU3OX0.NB8klHg1FA7-WO1pwCnyKhs0DcKIpVd14TKRtFOgih8',
+    authOptions: const FlutterAuthClientOptions(
+      authFlowType: AuthFlowType.pkce,)
+  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => AuthChangeNotifier(),),
+    ],
+    child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,11 +30,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: lightTheme(),
-      home: MainPage(),
+      home: Consumer<AuthChangeNotifier>(
+        builder: (context, value, child) {
+          final isLogged = value.authState.result == AuthResult.success;
+          if (isLogged){
+            return ListFriendPage();
+          } else{
+            return MainPage();
+          }
+        }),
     );
   }
 }

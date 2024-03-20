@@ -1,17 +1,18 @@
 import 'dart:async';
 
-import 'package:chatapp/feature/authentication/models/auth_result.dart';
 import 'package:chatapp/feature/authentication/view_models/notifiers/auth_change_notifier.dart';
+import 'package:chatapp/feature/authentication/views/sign_in.dart';
 import 'package:chatapp/feature/listfriend/views/list_friend.dart';
 import 'package:chatapp/widgets/custom_textfield.dart';
 import 'package:chatapp/widgets/password_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SignIn extends StatelessWidget {
+class SignUp extends StatelessWidget {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passTextController = TextEditingController();
-  StreamController<bool> loginStreamController = StreamController();
+  TextEditingController usernameTextController = TextEditingController();
+  StreamController<bool> signUpStreamController = StreamController();
 
   Future sleep() {
   return Future.delayed(const Duration(seconds: 1), () => "0.1");
@@ -73,7 +74,21 @@ class SignIn extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomTextField(
-                      controller: emailTextController,
+                      controller: usernameTextController,
+                      hintText: "Username",
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomTextField(
+                     controller: emailTextController,
                       hintText: "Email",
                     ),
                   ],
@@ -94,30 +109,39 @@ class SignIn extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-
               Expanded(
                   child: StreamBuilder<bool>(
-                      stream: loginStreamController.stream,
+                      stream: signUpStreamController.stream,
                       builder: (context, snapshot) {
                         final authProvider = Provider.of<AuthChangeNotifier>(context);
                         bool check = snapshot.data ?? false;
                         passTextController.addListener(() {
                           if (emailTextController.text != "" &&
-                              passTextController.text != "") {
-                            loginStreamController.add(true);
+                              passTextController.text != "" && usernameTextController.text != "") {
+                            signUpStreamController.add(true);
                           } else {
-                            loginStreamController.add(false);
+                            signUpStreamController.add(false);
                           }
                         });
 
                         emailTextController.addListener(() {
                           if (emailTextController.text != "" &&
-                              passTextController.text != "") {
-                            loginStreamController.add(true);
+                              passTextController.text != "" && usernameTextController.text != "") {
+                            signUpStreamController.add(true);
                           } else {
-                            loginStreamController.add(false);
+                            signUpStreamController.add(false);
                           }
                         });
+
+                        emailTextController.addListener(() {
+                          if (emailTextController.text != "" &&
+                              passTextController.text != "" && usernameTextController.text != "") {
+                            signUpStreamController.add(true);
+                          } else {
+                            signUpStreamController.add(false);
+                          }
+                        });
+
                         return Align(
                           alignment: Alignment.topCenter,
                           child: ElevatedButton(
@@ -136,27 +160,23 @@ class SignIn extends StatelessWidget {
                                       currentFocus.unfocus();
                                     }
 
-
-                                    await authProvider.signInWithPassword(email: emailTextController.text, password: passTextController.text);
-                                    final result = context.read<AuthChangeNotifier>().authState.result;
-
-                                    if (context.mounted && result == AuthResult.success){
+                                    await authProvider.signUpWithPassword(email: emailTextController.text, password: passTextController.text, username: usernameTextController.text);
+                                    
+                                    if (context.mounted){
                                       Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return ListFriendPage();
+                                          return SignIn();
                                         },
                                       ),
                                       (route) => false,
                                     );
-                                    }else{
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.read<AuthChangeNotifier>().exceptionMessage!)));
                                     }
                                     
                                   }
                                 : null,
-                            child: isLoading ? CircularProgressIndicator() : Text("Log in"),
+                            child: isLoading ? CircularProgressIndicator() : Text("Sign Up"),
                           ),
                         );
                       }))

@@ -1,9 +1,15 @@
+import 'package:chatapp/feature/authentication/view_models/notifiers/auth_change_notifier.dart';
 import 'package:chatapp/feature/authentication/views/sign_in.dart';
+import 'package:chatapp/feature/authentication/views/sign_up.dart';
+import 'package:chatapp/test.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
+    
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -126,7 +132,11 @@ class MainPage extends StatelessWidget {
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black
                 ),
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                    return SignUp();
+                  },));
+                },
                 child: Text("SIGN UP WITH MAIL", style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Colors.black,
                   fontWeight: FontWeight.bold

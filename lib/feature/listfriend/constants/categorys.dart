@@ -1,0 +1,1 @@
+List<String> categoryMainPage = ["All Chats", "Groups", "Contracts"];
