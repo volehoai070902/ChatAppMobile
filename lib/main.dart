@@ -4,6 +4,7 @@ import 'package:chatapp/config/theme.dart';
 import 'package:chatapp/feature/authentication/models/auth_result.dart';
 import 'package:chatapp/feature/authentication/view_models/notifiers/auth_change_notifier.dart';
 import 'package:chatapp/feature/authentication/views/intro_page.dart';
+import 'package:chatapp/feature/chat/view_model/notifier/chat_notifier.dart';
 import 'package:chatapp/feature/listfriend/views/list_friend.dart';
 import 'package:chatapp/test.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ void main() async{
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => AuthChangeNotifier(),),
+      ChangeNotifierProvider(create: (context) => ChatNotifier(),)
     ],
     child: const MyApp()));
 }

@@ -57,11 +57,16 @@ class Authenticator{
   }
 
   void onSaveUserInf(User? user) async{
-    UserModel userModel = UserModel();
+    UserModel userModel = UserModel(
+      email: user?.email,
+      id: user?.id,
+      username:user?.userMetadata?["username"],
+    );
+
     await supabase.rest.from(userModel.tableName).insert({
-        userModel.email: user?.email,
-        userModel.userid:user?.id,
-        userModel.username:user?.userMetadata?["username"]
+        "email": userModel.email,
+        "id":userModel.id,
+        "username":user?.userMetadata?["username"]
     });
   }
 }

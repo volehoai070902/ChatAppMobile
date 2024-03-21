@@ -144,6 +144,7 @@
 import 'dart:async';
 
 import 'package:chatapp/feature/authentication/view_models/notifiers/auth_change_notifier.dart';
+import 'package:chatapp/feature/chat/view_model/notifier/chat_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -163,6 +164,7 @@ class TroiOiPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -171,11 +173,9 @@ class TroiOiPage extends StatelessWidget {
             ElevatedButton(onPressed: (){
               context.read<AuthChangeNotifier>().Test();
             }, child: Text("CLICK")),
-            Consumer<AuthChangeNotifier>(builder: (context, value, child) {
-              value.authState.isLoading;
-              return value.authState.isLoading ? CircularProgressIndicator() : Center(
-                child: Text("${value.authState.isLoading}"),
-              );
+            Consumer<ChatNotifier>(builder: (context, value, child) {
+              
+              return Container();
             },)
           ],
         ),
