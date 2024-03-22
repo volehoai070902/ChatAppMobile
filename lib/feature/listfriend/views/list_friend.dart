@@ -9,10 +9,11 @@ import 'package:chatapp/feature/chat/views/chat_views.dart';
 import 'package:chatapp/feature/listfriend/constants/categorys.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ListFriendPage extends StatelessWidget {
   StreamController listFriendController = StreamController();
-
+  
   List<Widget> _widgetOptions = <Widget>[
     ListFriend(),
     Center(
@@ -33,7 +34,11 @@ class ListFriendPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> categoryList = [];
-    print("Change page");
+
+    
+
+    // print(context.read<AuthChangeNotifier>().isExpired);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -42,11 +47,7 @@ class ListFriendPage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) {
-                    return ChatPage();
-                  },
-                ));
+                
               },
               icon: Icon(Icons.search)),
           IconButton(
@@ -96,6 +97,7 @@ class ListFriendPage extends StatelessWidget {
                   child: GetCategoryList(
                       categoryList: categoryList,
                       selectedIndex: selectedIndex,
+                      
                       listFriendController: listFriendController),
                 ),
                 SizedBox(
@@ -137,7 +139,7 @@ class GetCategoryList extends StatefulWidget {
   State<GetCategoryList> createState() => _GetCategoryListState();
 }
 
-class _GetCategoryListState extends State<GetCategoryList> {
+class _GetCategoryListState extends State<GetCategoryList>  {
   List<Widget> getListCategory() {
     widget.categoryList = [];
     for (int i = 0; i < categoryMainPage.length; i++) {
@@ -184,26 +186,45 @@ class ListFriend extends StatefulWidget {
   State<ListFriend> createState() => _ListFriendState();
 }
 
-class _ListFriendState extends State<ListFriend> {
+class _ListFriendState extends State<ListFriend> with WidgetsBindingObserver{
   late ChatNotifier chatNotifier;
+  final _supabase = Supabase.instance;
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
-    chatNotifier = Provider.of(context, listen: false);
-    Future.delayed(const Duration(milliseconds: 10), () {
-      chatNotifier.getUsers();
+    WidgetsBinding.instance.addObserver(this);
+    Future.delayed(const Duration(seconds: 1), ()async {
+      await Provider.of<ChatNotifier>(context, listen: false).getUsers();
     });
   }
 
   @override
+  void dispose (){
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed){
+      print("Resume");                                 
+      await Provider.of<ChatNotifier>(context, listen: false).getUsers();
+    }
+
+    
+  }
+  
+  @override
   Widget build(BuildContext context){
-    print("Rebuild");
     return Consumer<ChatNotifier>(builder: (context, value, child) {
       return Container(
         child: Expanded(
           child: StreamBuilder<List<UserModel>>(
-            stream: value.getUsers(),
+            stream: value.userStream,
             builder: (context, snapshot) {
               final users = snapshot.data;
               return Container(
@@ -217,7 +238,11 @@ class _ListFriendState extends State<ListFriend> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) {
-                              return ChatPage();
+                              return ChatPage(
+                                displayName: user?.username ?? "",
+                                receiverId: user?.id,
+                                senderId: Provider.of<AuthChangeNotifier>(context, listen: false).authState.userId,
+                              );
                             },
                           ));
                         },
@@ -225,7 +250,6 @@ class _ListFriendState extends State<ListFriend> {
                             Image(image: AssetImage("assets/images/gamer.png")),
                         title: Text(
                           user?.username ?? "",
-             
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold, color: Colors.black),
                         ),

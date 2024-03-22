@@ -7,17 +7,20 @@ class AuthState{
   final AuthResult? result;
   final bool isLoading;
   final String? userId;
+  final bool? isExpire;
   final AuthException? authException;
+
   const AuthState(
     {
       required this.result,
       required this.isLoading,
       required this.userId,
-      this.authException
+      this.authException,
+      this.isExpire
     }
   );
 
-  const AuthState.unknown():result = null, isLoading = false, userId = null, authException = null;
+  const AuthState.unknown():result = null, isLoading = false, userId = null, authException = null, isExpire = true;
 
   AuthState copiedWithIsLoading(bool isLoading) => AuthState(result: result, isLoading: isLoading, userId: userId);
   AuthState copiedWithException(AuthException exception) =>AuthState(authException: exception,result: result, isLoading: isLoading, userId: userId);

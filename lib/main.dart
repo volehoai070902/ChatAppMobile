@@ -12,16 +12,19 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
     url: 'https://unoazldgvjylccxiznha.supabase.co',
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVub2F6bGRndmp5bGNjeGl6bmhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTA4MzI1NzksImV4cCI6MjAyNjQwODU3OX0.NB8klHg1FA7-WO1pwCnyKhs0DcKIpVd14TKRtFOgih8',
     authOptions: const FlutterAuthClientOptions(
       authFlowType: AuthFlowType.pkce,)
   );
-  runApp(MultiProvider(
+  runApp(
+    MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => AuthChangeNotifier(),),
-      ChangeNotifierProvider(create: (context) => ChatNotifier(),)
+      ChangeNotifierProvider(create: (context) => ChatNotifier(),),
+      ChangeNotifierProvider(create: (context) => Counter(),)
     ],
     child: const MyApp()));
 }

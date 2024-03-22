@@ -10,14 +10,18 @@ class Authenticator{
   String? get displayName => supabase.auth.currentUser?.userMetadata?["username"] ?? '';
   String? _exceptionMessage = '';
   String? get exceptionMessage => _exceptionMessage;
+  bool? get isExpired => supabase.auth.currentSession?.isExpired;
+
   Future<void> logOut () async{
-    
+    // supabase.dispose();
     await supabase.auth.signOut();
+    
   }
 
   Future<AuthResponse> signUpWithPassword({required String email, required  password,required String username}) async{
     
     try{
+      
       final user = await supabase.auth.signUp(
         email: email,
         password: password,
@@ -25,11 +29,9 @@ class Authenticator{
           'username': username
         }
       );
-
+      
       if (user.user == null){
         throw FlutterError("Signup failed");
-      }else{
-        onSaveUserInf(user.user);
       }
       return user;
     }
@@ -69,4 +71,5 @@ class Authenticator{
         "username":user?.userMetadata?["username"]
     });
   }
+  
 }

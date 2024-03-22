@@ -150,10 +150,15 @@ import 'package:provider/provider.dart';
 
 class Counter extends ChangeNotifier {
   Counter() {
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      _count++;
-      notifyListeners();
-    });
+    // Timer.periodic(Duration(seconds: 1), (timer) {
+    //   _count++;
+    //   notifyListeners();
+    // });
+  }
+
+  Future<void> refreshToken()async{
+    _count++;
+    notifyListeners();
   }
   int _count = 42;
   int get count => _count;
@@ -170,13 +175,10 @@ class TroiOiPage extends StatelessWidget {
       body: Container(
         child: Column(
           children: [
-            ElevatedButton(onPressed: (){
-              context.read<AuthChangeNotifier>().Test();
+            ElevatedButton(onPressed: ()async{
+              await context.read<Counter>().refreshToken();
             }, child: Text("CLICK")),
-            Consumer<ChatNotifier>(builder: (context, value, child) {
-              
-              return Container();
-            },)
+            Text("${context.watch<Counter>()._count}", style: TextStyle(color: Colors.black),)
           ],
         ),
     ));

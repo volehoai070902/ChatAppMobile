@@ -9,8 +9,8 @@ class UserModel {
   String get tableName => "table_user";
 
   UserModel(
-      {
-        this.id,
+    {
+      this.id,
       this.created,
       this.username,
       this.email,

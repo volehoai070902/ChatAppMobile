@@ -8,6 +8,7 @@ class AuthChangeNotifier extends ChangeNotifier{
   int get count => _count;
   String? get displayName => _authenticator.displayName;
   String? get exceptionMessage => _authenticator.exceptionMessage;
+  bool? get isExpired => _authenticator.isExpired;
   final _authenticator = Authenticator();
   AuthState authState = AuthState.unknown();
   AuthChangeNotifier(){
@@ -26,6 +27,7 @@ class AuthChangeNotifier extends ChangeNotifier{
     authState = authState.copiedWithIsLoading(true);
     await _authenticator.logOut();
     authState = AuthState.unknown();
+    
     notifyListeners();
   }
 
@@ -34,7 +36,7 @@ class AuthChangeNotifier extends ChangeNotifier{
     final result = await _authenticator.signInWithPassword(email: email, password: password);
     final userId = _authenticator.userId;
 
-    authState = AuthState(result: result, isLoading: false, userId: userId);
+    authState = AuthState(result: result, isLoading: false, userId: userId, );
     notifyListeners();
   }
 
@@ -45,15 +47,18 @@ class AuthChangeNotifier extends ChangeNotifier{
       required String username,
     }
   )async{
+    
     authState = authState.copiedWithIsLoading(true);
     final result = await _authenticator.signUpWithPassword(email: email.trim(), password: password.trim(), username: username.trim());
-    print(result.user?.id);
-
+    
     if (result.user != null){
-      // save user
+      _authenticator.onSaveUserInf(result.user);
     }
+    notifyListeners();
+  }
 
-    authState = AuthState(result: AuthResult.success, isLoading: false, userId: result.user?.id);
+
+  Future<void> refreshSessions() async{
     notifyListeners();
   }
 }
