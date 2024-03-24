@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class CustomSearchDelegate extends SearchDelegate {
   final List<String> searchList = [
     "Apple",
@@ -91,7 +92,7 @@ class CustomSearchDelegate extends SearchDelegate {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     return theme.copyWith(
-      
+
       inputDecorationTheme: InputDecorationTheme(
         border: InputBorder.none,
       ),
@@ -132,7 +133,6 @@ class CustomSearchDelegate extends SearchDelegate {
         color: Colors.black,
         fontSize: 13
       )
-
       )
     );
   }

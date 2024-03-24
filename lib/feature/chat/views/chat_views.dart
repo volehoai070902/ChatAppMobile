@@ -198,9 +198,8 @@ class ChatPage extends StatelessWidget {
   }
 }
 
-class buildMessageInputBox extends StatelessWidget {
+class buildMessageInputBox extends StatefulWidget {
   ScrollController scrollController;
-  TextEditingController chatController = TextEditingController();
   StreamController<List<Map<String,Object>>> chatBoxController;
   String? senderId;
   String? receiverId;
@@ -213,6 +212,18 @@ class buildMessageInputBox extends StatelessWidget {
   });
 
   @override
+  State<buildMessageInputBox> createState() => _buildMessageInputBoxState();
+}
+
+class _buildMessageInputBoxState extends State<buildMessageInputBox> {
+  TextEditingController chatController = TextEditingController();
+  late String textChatInput = "";
+  @override
+  void initState() {
+    super.initState();
+    chatController.text = textChatInput;
+  }
+  @override 
   Widget build(BuildContext context) {
     return Container(
       height: 60,
@@ -229,6 +240,11 @@ class buildMessageInputBox extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                     color: Colors.white),
                 child: TextField( 
+                  onChanged: (value) {
+                    setState(() {
+                      textChatInput = value;
+                    });
+                  },
                   controller: chatController, 
                   style: TextStyle(color: Colors.black, fontSize: 15),
                   decoration: InputDecoration(
@@ -256,22 +272,18 @@ class buildMessageInputBox extends StatelessWidget {
                     elevation: 0
                   ),
                   onPressed: ()async{
-                    listMessage.add(
-                      {"id": 333, "home": 123, "away": 234, "message": chatController.text},
-                    );
-                    scrollController.animateTo(scrollController.position.minScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                    chatBoxController.add(listMessage);
-                    
+                    widget.scrollController.animateTo(widget.scrollController.position.minScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                    widget.chatBoxController.add(listMessage);
+
                     context.read<ChatNotifier>().sendMessage(
                       {
-                        "senderid": senderId?.trim(),
-                        "receiverid": receiverId?.trim(),
+                        "senderid": widget.senderId?.trim(),
+                        "receiverid": widget.receiverId?.trim(),
                         "message":chatController.text,
                         "created_at":DateTime.now().toIso8601String(),
                         "updated_at":DateTime.now().toIso8601String()
                       }
                     );
-
                     chatController.clear();
                   },
                   child: Icon(Icons.send),
